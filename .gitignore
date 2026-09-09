@@ -1,0 +1,23 @@
+# 依赖
+node_modules/
+
+# 构建产物（GitHub Pages 由 Actions/工作流生成，不入库）
+dist/
+
+# 本地截图与调试
+shots/
+
+# 日志
+npm-debug.log*
+*.log
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.idea/
+
+# 误置于项目根的空 git 仓库（无关内容）
+/W作品集/

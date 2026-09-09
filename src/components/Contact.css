@@ -1,0 +1,385 @@
+/* ============================================================
+   Contact — 底部联系区（整屏收尾）
+   ============================================================ */
+
+.contact {
+  position: relative;
+  min-height: 100vh;
+  padding: 160px 0 56px;
+  background: var(--bg-0);
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+}
+
+.contact__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.contact__bg-glow {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1200px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(122, 240, 255, 0.12), transparent 60%);
+  filter: blur(60px);
+}
+
+.contact__bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 30%, transparent 80%);
+}
+
+.contact__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.contact__head {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+  align-items: center;
+}
+
+.contact__head .section-eyebrow { color: var(--text-1); }
+
+.contact__title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 80px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text-0);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact__title-en {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.contact__sub {
+  max-width: 600px;
+  color: var(--text-1);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* BorderGlow 瓦片：grid 直接子，撑满 */
+.contact-tile {
+  height: 100%;
+}
+
+/* 卡片内容（边框/背景/辉光由 .contact-tile 的 BorderGlow 提供） */
+.contact__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 30px 26px;
+  height: 100%;
+  transition: transform 0.4s var(--ease-out);
+  cursor: pointer;
+  min-height: 170px;
+}
+
+.contact-tile:hover .contact__card {
+  transform: translateY(-3px);
+}
+
+.contact__card--static {
+  cursor: default;
+}
+
+.contact__card-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--text-2);
+  text-transform: uppercase;
+}
+
+.contact__card-value {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-0);
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.contact__card-value--small { font-size: 14px; }
+
+.contact__card-arrow {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  position: absolute;
+  display: grid;
+  place-items: center;
+  transition: all 0.4s var(--ease-out);
+}
+
+.contact__card-arrow::before,
+.contact__card-arrow::after {
+  content: '';
+  position: absolute;
+  background: var(--text-1);
+}
+
+.contact__card-arrow::before {
+  width: 10px;
+  height: 1px;
+}
+
+.contact__card-arrow::after {
+  width: 5px;
+  height: 5px;
+  border-top: 1px solid var(--text-1);
+  border-right: 1px solid var(--text-1);
+  transform: rotate(45deg);
+  background: transparent;
+  right: 9px;
+}
+
+.contact-tile:hover .contact__card-arrow {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.contact-tile:hover .contact__card-arrow::before { background: var(--bg-0); }
+.contact-tile:hover .contact__card-arrow::after {
+  border-color: var(--bg-0);
+  background: transparent;
+}
+
+.contact__cta {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* 下载入口下方的备用联系 · 手机号 */
+.contact__tel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: -12px 0 0;
+}
+.contact__tel-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--text-2);
+  text-transform: uppercase;
+}
+.contact__tel-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--text-0);
+  padding: 9px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+}
+.contact__tel-num:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(125, 243, 255, 0.06);
+}
+.contact__tel-icon { color: var(--accent); }
+
+.btn--lg {
+  height: 60px;
+  padding: 0 32px;
+  font-size: 15px;
+}
+
+.contact__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--text-2);
+  text-transform: uppercase;
+  flex-wrap: wrap;
+}
+
+.contact__footer-left,
+.contact__footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contact__footer-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+
+@media (max-width: 1024px) {
+  .contact__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .contact { padding: 120px 0 40px; }
+  .contact__grid { grid-template-columns: 1fr; }
+  .contact__footer { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .contact__title { font-size: 36px; }
+}
+
+/* ============================================================
+   Contact — 作品集下载单一入口（百度网盘）
+   ============================================================ */
+.contact-download {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.contact__download {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 34px 38px;
+  border-radius: 16px;
+  transition: transform 0.4s var(--ease-out);
+  cursor: pointer;
+}
+
+.contact-download:hover .contact__download {
+  transform: translateY(-4px);
+}
+
+/* 图标：三层纸张叠加 + 云朵下载语义（简化为文档夹） */
+.contact__download-ico {
+  position: relative;
+  flex: none;
+  width: 54px;
+  height: 60px;
+  border-radius: 10px;
+  background: linear-gradient(160deg, rgba(125, 243, 255, 0.16), rgba(125, 243, 255, 0.04));
+  border: 1px solid rgba(125, 243, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+.contact__download-ico i {
+  display: block;
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.contact__download-ico i:last-child {
+  width: 15px;
+  margin-left: -9px;
+}
+
+.contact__download-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.contact__download-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--text-2);
+  text-transform: uppercase;
+}
+
+.contact__download-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-0);
+  line-height: 1.2;
+}
+
+.contact__download-meta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+.contact__download-arrow {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  color: var(--text-1);
+  transition: all 0.4s var(--ease-out);
+}
+
+.contact-download:hover .contact__download-arrow {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg-0);
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 640px) {
+  .contact__download { flex-direction: column; align-items: flex-start; gap: 18px; padding: 28px 24px; }
+  .contact__download-arrow { align-self: flex-end; }
+}

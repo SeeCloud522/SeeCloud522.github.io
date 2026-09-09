@@ -1,0 +1,83 @@
+/* ============================================================
+   BorderGlow — 边缘感应辉光容器
+   ============================================================ */
+
+.border-glow {
+  position: relative;
+  border-radius: var(--bg-radius, 10px);
+  background: var(--bg-color, #0e0f12);
+  overflow: hidden;
+  isolation: isolate;
+  /* 交互时辉光整体强度 */
+  --bg-visible: 0;
+}
+
+/* 锥形光束层（青金、模糊、朝指针方向） */
+.border-glow__aura {
+  position: absolute;
+  inset: -8px;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(12px);
+  mix-blend-mode: screen;
+  opacity: calc(var(--bg-boost, 0) * var(--bg-int, 1));
+  transition: opacity 0.45s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  background: conic-gradient(
+    from calc(var(--bg-angle, 0deg) - var(--bg-spread, 26deg) / 2) at 50% 50%,
+    transparent 0deg,
+    var(--bg-c1, var(--bg-glow)) calc(var(--bg-spread, 26deg) / 5),
+    var(--bg-c2, var(--bg-c1)) calc(var(--bg-spread, 26deg) / 2.2),
+    var(--bg-c3, var(--bg-c2)) calc(var(--bg-spread, 26deg) * 0.72),
+    transparent var(--bg-spread, 26deg)
+  );
+  /* 让辉光只落在靠边环带：中心遮住、边缘透出 */
+  -webkit-mask-image: radial-gradient(
+    circle at var(--bg-pos, 50% 50%),
+    transparent 0%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.55) 62%,
+    black 88%
+  );
+  mask-image: radial-gradient(
+    circle at var(--bg-pos, 50% 50%),
+    transparent 0%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.55) 62%,
+    black 88%
+  );
+}
+
+/* 描边：常态极淡，靠近边缘时被光束点亮 */
+.border-glow__edge {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at var(--bg-pos, 50% 50%),
+      rgba(var(--bg-glow, 125 243 255), calc(0.0 + var(--bg-boost, 0) * 0.5)),
+      transparent calc(var(--bg-glow-r, 90px) * 0.4)
+    );
+  opacity: 0.5;
+  transition: border-color 0.4s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* 内容层 */
+.border-glow__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 无指针设备 / 减弱动效：退化为静态细边框 */
+@media (hover: none) {
+  .border-glow__aura { display: none; }
+  .border-glow__edge { background: none; }
+}

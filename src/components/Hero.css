@@ -1,0 +1,307 @@
+/* ============================================================
+   Hero — 全屏首屏（v2，借鉴参考站排版）
+   结构：顶部信息行 + 左侧巨型标题/描述/CTA + 右侧立标 + 底部 meta 信息带
+   ============================================================ */
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 110px;
+  padding-bottom: 0;
+}
+
+/* 完整 Opening 预加载屏障 */
+.hero__loader {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: #07080a;
+  will-change: transform, opacity;
+}
+.hero__loader.is-done { display: none; }
+
+.loader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.loader__mark {
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 850;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--accent);
+  letter-spacing: -0.04em;
+}
+
+.loader__name {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-0);
+  letter-spacing: 0.12em;
+}
+
+.loader__sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  color: var(--text-2);
+  text-transform: uppercase;
+}
+
+/* 视频背景 */
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  filter: contrast(1.06) saturate(0.92) hue-rotate(-6deg);
+}
+
+/* 视频缺 src 时隐藏 */
+video.hero__video:not([src]),
+video.hero__video[src=''] {
+  display: none;
+}
+
+/* 粒子层 */
+.hero__particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* 遮罩：四周渐隐保证可读，但保留中央亮度 */
+.hero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(8, 9, 10, 0.82) 0%, rgba(8, 9, 10, 0) 28%),
+    linear-gradient(0deg, rgba(8, 9, 10, 0.94) 0%, rgba(8, 9, 10, 0) 34%),
+    linear-gradient(90deg, rgba(8, 9, 10, 0.78) 0%, rgba(8, 9, 10, 0.18) 32%, transparent 55%, rgba(8, 9, 10, 0.5) 100%);
+}
+
+/* 顶部信息行 */
+.hero__topline {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 0;
+}
+
+.hero__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 12px var(--success);
+  animation: pulse 2.4s ease-in-out infinite;
+  flex: none;
+}
+
+.hero__topline-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--text-1);
+  text-transform: uppercase;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.82); }
+}
+
+/* 内容区：主轴横向，内容居左 */
+.hero__content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding-bottom: 8px;
+}
+
+.hero__main {
+  max-width: 1240px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.hero__eyebrow {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 550;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero__eyebrow::before {
+  content: '';
+  width: 34px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* 巨型标题 */
+.hero__title {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+}
+
+.hero__title-row {
+  display: flex;
+  font-weight: 820;
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  font-size: clamp(70px, 12.5vw, 210px);
+  color: var(--text-0);
+}
+
+.hero__title-row--role {
+  font-size: clamp(34px, 4.6vw, 78px);
+  font-weight: 620;
+  color: var(--text-1);
+  margin-top: 14px;
+  letter-spacing: -0.015em;
+}
+
+/* 逐字：初始由 GSAP 控制（避免 CSS 默认隐藏），这里只保证可变换 */
+.hero__title .char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.hero__copy {
+  max-width: 720px;
+  font-size: 19px;
+  line-height: 1.75;
+  color: var(--text-1);
+}
+
+.hero__copy em {
+  font-style: normal;
+  color: var(--text-0);
+  font-weight: 650;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+/* 右侧立标 */
+.hero__rail {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex: none;
+}
+
+.hero__rail span {
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--text-2);
+  text-transform: uppercase;
+}
+
+.hero__rail-line {
+  width: 1px;
+  height: 140px;
+  background: linear-gradient(var(--text-3), transparent);
+}
+
+/* 底部信息带（毛玻璃，参考站 hero-meta 风格） */
+.hero__meta {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+}
+
+.hero__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 24px;
+  background: rgba(14, 15, 18, 0.55);
+  transition: background 0.35s var(--ease-out);
+}
+
+.hero__meta-item:hover {
+  background: rgba(14, 15, 18, 0.9);
+}
+
+.hero__meta-k {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--text-2);
+  text-transform: uppercase;
+}
+
+.hero__meta-v {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-0);
+}
+
+@media (max-width: 1080px) {
+  .hero__content { padding-bottom: 20px; }
+  .hero__rail { display: none; }
+  .hero__meta { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 720px) {
+  .hero { padding-top: 96px; }
+  .hero__copy { font-size: 17px; }
+  .hero__meta { grid-template-columns: 1fr 1fr; border-radius: var(--radius); margin-bottom: 22px; }
+  .hero__meta-item { padding: 16px 18px; }
+}

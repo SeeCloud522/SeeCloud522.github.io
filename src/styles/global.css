@@ -1,0 +1,387 @@
+/* ============================================================
+   global.css — 暗色科技感基础样式
+   （v2 借鉴参考站排版：巨型字重标题、清晰 eyebrow→标题→描述→CTA 层级）
+   ============================================================ */
+
+:root {
+  /* 颜色 */
+  --bg-0: #08090a;            /* 页面底 */
+  --bg-1: #0e0f12;            /* 浅一号面板 */
+  --bg-2: #14161a;
+  --bg-3: #1b1e23;
+  --line: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --line-ink: rgba(10, 11, 13, 0.5);
+
+  --text-0: #f4f4f5;
+  --text-1: #b4b6bd;
+  --text-2: #777a83;
+  --text-3: #47494f;
+
+  --accent: #7df3ff;          /* 冷色辉光青 */
+  --accent-2: #e7d9b8;        /* 克制暖金 */
+  --accent-soft: rgba(125, 243, 255, 0.1);
+
+  --coral: #ff7a63;           /* 分类糖果色 —— 供作品/标签识别 */
+  --mint: #7be0b6;
+  --sky: #7cc4ff;
+  --amber: #f0d065;
+
+  --success: #7cf0ae;
+  --danger: #ff7a95;
+
+  /* 排版 */
+  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont,
+    'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --font-display: 'Inter', 'Noto Sans SC', sans-serif;
+
+  /* 布局 */
+  --container: 1700px;
+  --gutter: 48px;
+  --section-py: 150px;
+
+  /* 动效 */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --radius: 10px;
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-0);
+  color: var(--text-0);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ------------------------------------------------------------------
+   背景系统 v2.1（更丰富的暗色空间感）
+   结构：body 上叠加固定画布 →
+   1) 全局细网格 + 大刻度引导  2) 多层冷青/靛紫/暖金氛围辉光
+   3) 微弱视差星点  4) 噪点纹理
+   ------------------------------------------------------------------ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background-image:
+    /* 大刻度网格（淡） */
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    /* 每 4 格加深一条主轴线 */
+    linear-gradient(rgba(125, 243, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 243, 255, 0.045) 1px, transparent 1px);
+  background-size: 88px 88px, 88px 88px, 352px 352px, 352px 352px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+  mask-image: radial-gradient(ellipse 90% 78% at 50% 12%, black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 78% at 50% 12%, black 0%, transparent 100%);
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    /* 顶部冷青主光 + 斜向次光 */
+    radial-gradient(ellipse 46% 40% at 16% 6%, rgba(125, 243, 255, 0.11), transparent 62%),
+    radial-gradient(ellipse 34% 30% at 88% 14%, rgba(124, 196, 255, 0.07), transparent 62%),
+    /* 靛紫纵深（打破纯青单调） */
+    radial-gradient(ellipse 55% 55% at 68% 42%, rgba(110, 120, 255, 0.055), transparent 65%),
+    radial-gradient(ellipse 40% 40% at 24% 58%, rgba(231, 217, 184, 0.05), transparent 65%),
+    /* 底部水色回升 */
+    radial-gradient(ellipse 70% 50% at 50% 118%, rgba(124, 231, 255, 0.085), transparent 62%),
+    /* 画面边缘轻微压暗，形成纵深聚焦 */
+    radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* 噪点纹理（提升暗色质感，避免平板呆滞） */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 微弱星点层：散布的青白光点，衬在内容之下，增强空间纵深 */
+body.grain::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(1.6px 1.6px at 12% 22%, rgba(200, 240, 255, 0.7), transparent 100%),
+    radial-gradient(1.4px 1.4px at 78% 15%, rgba(255, 255, 255, 0.5), transparent 100%),
+    radial-gradient(1.2px 1.2px at 34% 44%, rgba(125, 243, 255, 0.5), transparent 100%),
+    radial-gradient(1.5px 1.5px at 88% 62%, rgba(255, 240, 200, 0.42), transparent 100%),
+    radial-gradient(1.1px 1.1px at 55% 80%, rgba(200, 220, 255, 0.5), transparent 100%),
+    radial-gradient(1.3px 1.3px at 22% 86%, rgba(125, 243, 255, 0.45), transparent 100%),
+    radial-gradient(1.2px 1.2px at 8% 68%, rgba(255, 255, 255, 0.4), transparent 100%),
+    radial-gradient(1.5px 1.5px at 64% 30%, rgba(255, 255, 255, 0.42), transparent 100%),
+    radial-gradient(1.2px 1.2px at 92% 88%, rgba(190, 220, 255, 0.42), transparent 100%),
+    radial-gradient(1.3px 1.3px at 45% 8%, rgba(125, 243, 255, 0.5), transparent 100%);
+  background-repeat: repeat;
+  background-size: 480px 480px;
+}
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-0);
+}
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: var(--bg-0); }
+::-webkit-scrollbar-thumb {
+  background: var(--bg-3);
+  border-radius: 6px;
+  border: 2px solid var(--bg-0);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+/* ============================================================
+   通用布局
+   ============================================================ */
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.section {
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+  position: relative;
+}
+
+/* eyebrow 眉题 + 标题 + 描述 + CTA 的统一区块头 */
+.section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) auto;
+  grid-template-areas: 'head sub' 'intro sub';
+  column-gap: 48px;
+  row-gap: 26px;
+  align-items: end;
+  margin-bottom: 76px;
+}
+
+.section-head__left {
+  grid-area: head;
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 18px;
+}
+
+.section-eyebrow::before {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(46px, 5vw, 92px);
+  font-weight: 820;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  color: var(--text-0);
+  margin: 0;
+}
+
+.section-title .em {
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.section-sub {
+  grid-area: sub;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  white-space: nowrap;
+  text-align: right;
+}
+
+.section-intro {
+  grid-area: intro;
+  max-width: 560px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-1);
+}
+
+/* ============================================================
+   按钮
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 28px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-0);
+  transition: all 0.35s var(--ease-out);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: var(--text-0);
+  color: var(--bg-0);
+  border-color: var(--text-0);
+}
+
+.btn-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg-0);
+}
+
+.btn .arrow {
+  width: 16px;
+  height: 1px;
+  background: currentColor;
+  position: relative;
+  transition: width 0.35s var(--ease-out);
+}
+
+.btn .arrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.btn:hover .arrow { width: 24px; }
+
+/* ============================================================
+   进场动效
+   —— .reveal 仅作 JS 标记（GSAP 驱动，不再默认隐藏，避免 JS 失败空白）
+   —— .mask-rise 掩码式标题进场
+   ============================================================ */
+
+.reveal {
+  /* 布局标记；初始/结束态由 GSAP 负责 */
+  will-change: transform, opacity;
+}
+
+/* 掩码升入容器：overflow 裁剪 + 内部整体上移 */
+.mask-rise {
+  display: block;
+  overflow: hidden;
+  line-height: 1.02;
+  padding-bottom: 0.04em; /* 避免裁掉下行 */
+}
+
+.mask-rise__in {
+  display: block;
+  will-change: transform, opacity;
+}
+
+/* GSAP 阶段防 FOUC：若 JS 尚未准备好，不让元素闪出又闪隐 */
+html.js-anim .reveal,
+html.js-anim .mask-rise__in,
+html.js-anim [data-motion] {
+  /* 初始隐藏由 JS gsap.from 设置；此处仅兜底无操作 */
+}
+
+/* ============================================================
+   响应式
+   ============================================================ */
+
+@media (max-width: 1080px) {
+  :root {
+    --gutter: 34px;
+    --section-py: 108px;
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --gutter: 22px;
+    --section-py: 84px;
+  }
+  .section-head {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'head' 'intro';
+    row-gap: 18px;
+    margin-bottom: 52px;
+  }
+  .section-sub { display: none; }
+}
