@@ -20,8 +20,8 @@ export const site = {
   // 作品集完整版 · 百度网盘下载入口
   portfolio: {
     name: '作品集 · 百度网盘',
-    link: 'https://pan.baidu.com/s/1wL9Ki7wsDUkmMPXdYa_AOA?pwd=8cn3',
-    pwd: '8cn3',
+    link: 'https://pan.baidu.com/s/1e7Q7zoZKc0d6d7e-hVMqvg?pwd=i3ak',
+    pwd: 'i3ak',
   },
 };
 
